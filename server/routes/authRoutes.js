@@ -10,7 +10,7 @@ router.get('/auth', async (req, res) => {
         title: "Auth",
       }
   
-      res.render('auth/index', { locals, layout: authLayout });
+      return res.status(200).render('auth/index', { locals, layout: authLayout });
     } catch (error) {
       console.log(error);
     }

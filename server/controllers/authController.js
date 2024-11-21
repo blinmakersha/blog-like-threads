@@ -57,13 +57,15 @@ class authController {
                 .cookie("access_token", token, {
                   httpOnly: true,
                 })
-                .redirect('/admin')
+                .json({token: token})
+                // .redirect('/admin')
             } else {
                 return res
                 .cookie("access_token", token, {
                   httpOnly: true,
                 })
-                .redirect('/')
+                .json({token: token})
+                // .redirect('/')
             }
         } catch (e) {
             console.log(e)

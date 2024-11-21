@@ -18,7 +18,7 @@ router.get("/admin", roleMiddleware(["ADMIN"]), async (req, res) => {
 
     const data = await Post.find();
 
-    res.render("admin/dashboard", {
+    return res.status(200).render("admin/dashboard", {
       locals,
       data,
       layout: adminLayout,
@@ -38,7 +38,7 @@ router.get("/add-post", roleMiddleware(["ADMIN"]), async (req, res) => {
       title: "Add Post",
     };
 
-    res.render("admin/add-post", {
+    return res.status(200).render("admin/add-post", {
       locals,
       layout: adminLayout,
     });
@@ -68,9 +68,10 @@ router.post(
         });
 
         await Post.create(newPost);
-        res.redirect("/admin");
+        // res.redirect("/admin")
+        return res.status(200).json(newPost);
       } catch (error) {
-        console.log(error);
+          return res.status(400).json({message: error})
       }
     } catch (error) {
       console.log(error);
@@ -90,7 +91,7 @@ router.get("/edit-post/:id", roleMiddleware(["ADMIN"]), async (req, res) => {
 
     const data = await Post.findOne({ _id: req.params.id });
 
-    res.render("admin/edit-post", {
+    return res.status(200).render("admin/edit-post", {
       locals,
       data,
       layout: adminLayout,
@@ -122,7 +123,8 @@ router.put("/edit-post/:id", roleMiddleware(["ADMIN"]), async (req, res) => {
     //   postId: req.params.id
     // });
 
-    res.redirect(`/edit-post/${req.params.id}`);
+    // res.redirect(`/edit-post/${req.params.id}`);
+    return res.status(200).json(req.params.id);
   } catch (error) {
     console.log(error);
   }
@@ -138,7 +140,8 @@ router.delete(
   async (req, res) => {
     try {
       await Post.deleteOne({ _id: req.params.id });
-      res.redirect("/admin");
+      // res.redirect("/admin");
+      return res.status(200).json(req.params.id);
     } catch (error) {
       console.log(error);
     }

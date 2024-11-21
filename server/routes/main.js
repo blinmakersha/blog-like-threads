@@ -16,7 +16,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
     const data = await Post.aggregate([ { $sort: { createdAt: -1 } } ])
 
-    res.render('index', { 
+    return res.status(200).render('index', { 
       locals,
       data,
       currentRoute: '/'
@@ -43,7 +43,7 @@ router.get('/post/:id', authMiddleware, async (req, res) => {
       title: data.title,
     }
 
-    res.render('post', { 
+    return res.status(200).render('post', { 
       locals,
       data,
       currentRoute: `/post/${slug}`
@@ -60,7 +60,7 @@ router.get('/create-post',async (req, res) => {
       title: 'Add Post',
     }
 
-    res.render('main/create-post', {
+    return res.status(200).render('main/create-post', {
       locals,
       layout: authLayout
     });
@@ -85,7 +85,8 @@ router.post('/create-post', authMiddleware, async (req, res) => {
       });
 
       await Post.create(newPost);
-      res.redirect('/');
+      // res.redirect('/');
+      return res.status(200).json(newPost);
     } catch (error) {
       console.log(error);
     }
